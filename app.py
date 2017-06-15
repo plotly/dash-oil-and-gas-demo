@@ -21,7 +21,7 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server)
-app.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
+app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
