@@ -6,6 +6,7 @@ import copy
 import datetime as dt
 
 import pandas as pd
+import Flask
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -18,8 +19,9 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 # In[]:
 # Create app
 
-app = dash.Dash('Oil and Gas')
-app.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
+server = Flask(__name__)
+app = dash.Dash(__name__, server=server)
+server.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
@@ -77,7 +79,7 @@ layout = dict(
 
 # In[]:
 # Create app layout
-app.layout = html.Div(
+server.layout = html.Div(
     [
         html.H2('New York Oil and Gas | Production Overview'),
         html.H5(
@@ -679,4 +681,4 @@ def make_count_figure(well_statuses, well_types, year_slider):
 # Main
 
 if __name__ == '__main__':
-    app.run_server()
+    app.server.run(debug=True, threaded=True)
