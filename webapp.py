@@ -18,7 +18,7 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 # In[]:
 # Create app
 
-app = dash.Dash()
+app = dash.Dash('Oil and Gas')
 app.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
 
 # Create controls
@@ -679,4 +679,4 @@ def make_count_figure(well_statuses, well_types, year_slider):
 # Main
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
