@@ -5,4 +5,5 @@ dash.ly==0.17.1
 dash-renderer==0.7.1
 dash-html-components==0.6.0
 dash-core-components==0.5.0
-gunicorn==19.6.0
+gunicorn==19.7.1
+flask==0.12
