@@ -6,7 +6,7 @@ import copy
 import datetime as dt
 
 import pandas as pd
-import Flask
+from flask import Flask
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -21,7 +21,7 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server)
-server.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
+app.css.append_css({'external_url': 'http://tiny.cc/dashcss'})
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
@@ -79,7 +79,7 @@ layout = dict(
 
 # In[]:
 # Create app layout
-server.layout = html.Div(
+app.layout = html.Div(
     [
         html.H2('New York Oil and Gas | Production Overview'),
         html.H5(
