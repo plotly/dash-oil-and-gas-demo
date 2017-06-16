@@ -83,6 +83,7 @@ layout = dict(
 # Create app layout
 app.layout = html.Div(
     [
+        html.Img(src='https://now.plot.ly/static/images/dash/dash-logo.png'),
         html.H2('New York Oil and Gas | Production Overview'),
         html.H5(
             '',
