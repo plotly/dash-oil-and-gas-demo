@@ -23,7 +23,7 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 app = dash.Dash(__name__, server=server)
-app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})
+app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})  # noqa: E501
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
@@ -38,12 +38,12 @@ well_type_options = [{'label': str(WELL_TYPES[well_type]),
                      for well_type in WELL_TYPES]
 
 # Load data
-df = pd.read_csv('data/wellspublic.csv', low_memory=False)
+df = pd.read_csv('data/wellspublic.csv')
 df['Date_Well_Completed'] = pd.to_datetime(df['Date_Well_Completed'])
 df = df[df['Date_Well_Completed'] > dt.datetime(1960, 1, 1)]
 
-trim = pd.read_csv('data/wellspublic.csv', index_col='API_WellNo')
-trim = trim[['Well_Type', 'Well_Name']]
+trim = df[['API_WellNo', 'Well_Type', 'Well_Name']]
+trim.index = trim['API_WellNo']
 dataset = trim.to_dict(orient='index')
 
 points = pickle.load(open("data/points.pkl", "rb"))
@@ -413,9 +413,8 @@ def make_main_figure(well_statuses, well_types, year_slider,
 
 # Main graph -> individual graph
 @app.callback(Output('individual_graph', 'figure'),
-              [Input('main_graph', 'hoverData'),
-               Input('main_graph', 'clickData')])
-def make_individual_figure(main_graph_hover, main_graph_click):
+              [Input('main_graph', 'hoverData')])
+def make_individual_figure(main_graph_hover):
 
     layout_individual = copy.deepcopy(layout)
 
@@ -424,12 +423,7 @@ def make_individual_figure(main_graph_hover, main_graph_click):
                                         'pointNumber': 569,
                                         'customdata': 31101173130000}]}
 
-    try:
-        raise Exception()
-        chosen = [point['customdata'] for point in main_graph_click['points']]
-    except:
-        chosen = [point['customdata'] for point in main_graph_hover['points']]
-
+    chosen = [point['customdata'] for point in main_graph_hover['points']]
     index, gas, oil, water = fetch_individual(chosen[0])
 
     if index is None:
@@ -500,10 +494,9 @@ def make_individual_figure(main_graph_hover, main_graph_click):
               [Input('well_statuses', 'value'),
                Input('well_types', 'value'),
                Input('year_slider', 'value'),
-               Input('main_graph', 'hoverData'),
-               Input('main_graph', 'clickData')])
+               Input('main_graph', 'hoverData')])
 def make_aggregate_figure(well_statuses, well_types, year_slider,
-                          main_graph_hover, main_graph_click):
+                          main_graph_hover):
 
     layout_aggregate = copy.deepcopy(layout)
 
@@ -511,16 +504,7 @@ def make_aggregate_figure(well_statuses, well_types, year_slider,
         main_graph_hover = {'points': [{'curveNumber': 4, 'pointNumber': 569,
                                         'customdata': 31101173130000}]}
 
-    if main_graph_hover is None:
-        main_graph_hover = {'points': [{'curveNumber': 4, 'pointNumber': 569,
-                                        'customdata': 31101173130000}]}
-
-    try:
-        raise Exception()
-        chosen = [point['customdata'] for point in main_graph_click['points']]
-    except:
-        chosen = [point['customdata'] for point in main_graph_hover['points']]
-
+    chosen = [point['customdata'] for point in main_graph_hover['points']]
     well_type = dataset[chosen[0]]['Well_Type']
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
 
@@ -607,7 +591,7 @@ def make_pie_figure(well_statuses, well_types, year_slider):
             labels=[WELL_TYPES[i] for i in aggregate.index],
             values=aggregate['API_WellNo'],
             name='Well Type Breakdown',
-            hoverinfo="label+text+value+percent+name",
+            hoverinfo="label+text+value+percent",
             textinfo="label+percent+name",
             hole=0.5,
             marker=dict(
@@ -672,7 +656,6 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
     layout_count['title'] = 'Completed Wells/Year'
     layout_count['dragmode'] = 'select'
-    layout_count['margin']['r'] = 35
     layout_count['showlegend'] = False
 
     figure = dict(data=data, layout=layout_count)
