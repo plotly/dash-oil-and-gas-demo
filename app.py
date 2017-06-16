@@ -83,7 +83,7 @@ layout = dict(
 # Create app layout
 app.layout = html.Div(
     [
-        html.Img(src='https://now.plot.ly/static/images/dash/dash-logo.png'),
+        html.Img(src='https://raw.githubusercontent.com/plotly/oil-and-gas/master/data/dash-logo%20copy.png?token=AK-nZOdj_s00FsenSnDL00XCBQkubgljks5ZTYlzwA%3D%3D'),  # noqa: E501
         html.H2('New York Oil and Gas | Production Overview'),
         html.H5(
             '',
