@@ -84,7 +84,10 @@ layout = dict(
 app.layout = html.Div(
     [
         html.Img(src='https://raw.githubusercontent.com/plotly/oil-and-gas/master/data/dash-logo%20copy.png?token=AK-nZOdj_s00FsenSnDL00XCBQkubgljks5ZTYlzwA%3D%3D'),  # noqa: E501
-        html.H2('New York Oil and Gas | Production Overview'),
+        html.H2(
+            'New York Oil and Gas | Production Overview',
+            style={'display': 'inline-block'}
+        ),
         html.H5(
             '',
             id='well_text',
