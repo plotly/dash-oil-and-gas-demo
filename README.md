@@ -8,5 +8,5 @@ To learn more check out our [documentation](http://dash-docs.herokuapp.com/dash/
 
 The following are screenshots for the app in this repo:
 
-![Alt desc](https://raw.githubusercontent.com/plotly/oil-and-gas/ReadmeAndAnalyticsChanges/Screenshot/Screenshot1.png?token=ARkbw4w4jS2f610XmPg4JTImz4cpFutpks5ZUXa6wA%3D%3D)
+![Alt desc](https://github.com/plotly/oil-and-gas/raw/master/Screenshots/Screenshot1.png)
 ![Alt desc](https://github.com/plotly/oil-and-gas/raw/master/Screenshots/Screenshot2.png)
