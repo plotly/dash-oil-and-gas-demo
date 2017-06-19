@@ -15,7 +15,7 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
-app = dash.Dash(__name__, server=server)
+app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)
 app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})  # noqa: E501
 
 # Create controls
