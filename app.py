@@ -674,6 +674,10 @@ def make_count_figure(well_statuses, well_types, year_slider):
     return figure
 
 
+if 'DYNO' in os.environ:
+    app.scripts.append_script({
+        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
+    })
 # In[]:
 # Main
 
