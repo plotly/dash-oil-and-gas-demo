@@ -1,6 +1,3 @@
-# In[]:
-# Import required libraries
-
 import os
 import pickle
 import copy
@@ -15,10 +12,6 @@ import dash_html_components as html
 
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
-
-
-# In[]:
-# Create app
 
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
