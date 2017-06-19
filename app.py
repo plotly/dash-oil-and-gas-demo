@@ -25,6 +25,11 @@ server.secret_key = os.environ.get('secret_key', 'secret')
 app = dash.Dash(__name__, server=server)
 app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})  # noqa: E501
 
+if 'DYNO' in os.environ:
+    app.scripts.append_script({
+        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
+    })
+
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
                   for county in COUNTIES]
