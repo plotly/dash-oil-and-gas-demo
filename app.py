@@ -16,12 +16,12 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 
-app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)
-app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/stylesheets/master/stylesheet-oil-and-gas.css'})  # noqa: E501
+app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)  # noqa: E501
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/26f771d6/stylesheet-oil-and-gas.css'})  # noqa: E501
 
 if 'DYNO' in os.environ:
     app.scripts.append_script({
-        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
+        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'  # noqa: E501
     })
 
 # Create controls
@@ -53,7 +53,7 @@ mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NW
 layout = dict(
     autosize=True,
     height=500,
-    font=dict(family="Overpass", color='#CCCCCC'),
+    font=dict(color='#CCCCCC'),
     titlefont=dict(color='#CCCCCC', size='14'),
     margin=dict(
         l=35,
@@ -64,7 +64,7 @@ layout = dict(
     hovermode="closest",
     plot_bgcolor="#191A1A",
     paper_bgcolor="#020202",
-    legend=dict(font=dict(size=11), orientation='h'),
+    legend=dict(font=dict(size=10), orientation='h'),
     title='Satellite Overview',
     mapbox=dict(
         accesstoken=mapbox_access_token,
@@ -82,28 +82,43 @@ layout = dict(
 # Create app layout
 app.layout = html.Div(
     [
-        html.Img(
-            src='https://raw.githubusercontent.com/plotly/dash-oil-and-gas-demo/master/data/dash-logo%20copy.png?token=AK-nZDkxxAlHku7RwXJ-cxJCIe_Tu35lks5ZUml6wA%3D%3D',  # noqa: E501
-            style={'width': '4%', 'float': 'left'}
+        html.Div(
+            [
+                html.Img(
+                    src='https://raw.githubusercontent.com/plotly/dash-oil-and-gas-demo/master/data/dash-logo%20copy.png?token=AK-nZDkxxAlHku7RwXJ-cxJCIe_Tu35lks5ZUml6wA%3D%3D',  # noqa: E501
+                    className='one columns',
+                    style={'height': '40', 'width': '40',
+                           'position': 'relative',
+                           'top': '20'}
+                ),
+                html.H2(
+                    'New York Oil and Gas | Production Overview',
+                    className='eleven columns',
+                ),
+            ],
+            className='row'
         ),
-        html.H2(
-            'New York Oil and Gas | Production Overview',
-            style={'width': '96%', 'text-align': 'left', 'float': 'left'}
-        ),
-        html.H5(
-            '',
-            id='well_text',
-            style={'width': '20%', 'float': 'left'}
-        ),
-        html.H5(
-            '',
-            id='production_text',
-            style={'width': '60%', 'text-align': 'center', 'float': 'left'}
-        ),
-        html.H5(
-            '',
-            id='year_text',
-            style={'width': '20%', 'text-align': 'right', 'float': 'left'}
+        html.Div(
+            [
+                html.H5(
+                    '',
+                    id='well_text',
+                    className='two columns'
+                ),
+                html.H5(
+                    '',
+                    id='production_text',
+                    className='eight columns',
+                    style={'text-align': 'center'}
+                ),
+                html.H5(
+                    '',
+                    id='year_text',
+                    className='two columns',
+                    style={'text-align': 'right'}
+                ),
+            ],
+            className='row'
         ),
         html.Div(
             [
@@ -119,97 +134,105 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                html.P('Filter by well status:'),
-                dcc.RadioItems(
-                    id='well_status_selector',
-                    options=[
-                        {'label': 'All ', 'value': 'all'},
-                        {'label': 'Active only ', 'value': 'active'},
-                        {'label': 'Customize ', 'value': 'custom'}
+                html.Div(
+                    [
+                        html.P('Filter by well status:'),
+                        dcc.RadioItems(
+                            id='well_status_selector',
+                            options=[
+                                {'label': 'All ', 'value': 'all'},
+                                {'label': 'Active only ', 'value': 'active'},
+                                {'label': 'Customize ', 'value': 'custom'}
+                            ],
+                            value='active',
+                            labelStyle={'display': 'inline-block'}
+                        ),
+                        dcc.Dropdown(
+                            id='well_statuses',
+                            options=well_status_options,
+                            multi=True,
+                            value=[]
+                        ),
+                        dcc.Checklist(
+                            id='lock_selector',
+                            options=[
+                                {'label': 'Lock camera', 'value': 'locked'}
+                            ],
+                            values=[],
+                        )
                     ],
-                    value='active',
-                    labelStyle={'display': 'inline-block'}
+                    className='six columns'
                 ),
-                dcc.Dropdown(
-                    id='well_statuses',
-                    options=well_status_options,
-                    multi=True,
-                    value=[]
+                html.Div(
+                    [
+                        html.P('Filter by well type:'),
+                        dcc.RadioItems(
+                            id='well_type_selector',
+                            options=[
+                                {'label': 'All ', 'value': 'all'},
+                                {'label': 'Productive only ', 'value': 'productive'},  # noqa: E501
+                                {'label': 'Customize ', 'value': 'custom'}
+                            ],
+                            value='productive',
+                            labelStyle={'display': 'inline-block'}
+                        ),
+                        dcc.Dropdown(
+                            id='well_types',
+                            options=well_type_options,
+                            multi=True,
+                            value=list(WELL_TYPES.keys()),
+                        ),
+                    ],
+                    className='six columns'
                 ),
             ],
-            style={'width': '49%', 'display': 'inline-block',
-                   'margin-bottom': '20'}
+            className='row'
         ),
         html.Div(
             [
-                html.P('Filter by well type:'),
-                dcc.RadioItems(
-                    id='well_type_selector',
-                    options=[
-                        {'label': 'All ', 'value': 'all'},
-                        {'label': 'Productive only ', 'value': 'productive'},
-                        {'label': 'Customize ', 'value': 'custom'}
+                html.Div(
+                    [
+                        dcc.Graph(id='main_graph')
                     ],
-                    value='productive',
-                    labelStyle={'display': 'inline-block'}
+                    className='eight columns',
+                    style={'margin-top': '20'}
                 ),
-                dcc.Dropdown(
-                    id='well_types',
-                    options=well_type_options,
-                    multi=True,
-                    value=list(WELL_TYPES.keys()),
+                html.Div(
+                    [
+                        dcc.Graph(id='individual_graph')
+                    ],
+                    className='four columns',
+                    style={'margin-top': '20'}
                 ),
             ],
-            style={'width': '49%', 'float': 'right',
-                   'display': 'inline-block', 'margin-bottom': '20'}
+            className='row'
         ),
-        html.Div([
-            html.Div(
-                [
-                    dcc.Graph(id='main_graph')
-                ],
-                style={'width': '66.5%', 'display': 'inline-block'}
-            ),
-            html.Div(
-                [
-                    dcc.Graph(id='individual_graph')
-                ],
-                style={'width': '33%', 'float': 'right',
-                       'display': 'inline-block'}
-            ),
-        ]),
-        html.Div([
-            html.Div(
-                [
-                    dcc.Graph(id='count_graph')
-                ],
-                style={'width': '33%', 'display': 'inline-block'}
-            ),
-            html.Div(
-                [
-                    dcc.Graph(id='pie_graph')
-                ],
-                style={'width': '33%', 'display': 'inline-block',
-                       'margin-left': '0.5%'}
-            ),
-            html.Div(
-                [
-                    dcc.Graph(id='aggregate_graph')
-                ],
-                style={'width': '33%', 'float': 'right',
-                       'display': 'inline-block'}
-            ),
-            dcc.Checklist(
-                id='lock_selector',
-                options=[
-                    {'label': 'Lock camera', 'value': 'locked'}
-                ],
-                values=[],
-                labelStyle={'position': 'relative', 'z-index': '2',
-                            'top': '-1000px', 'left': '35px',
-                            'color': '#CCCCCC'}
-            )
-        ]),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        dcc.Graph(id='count_graph')
+                    ],
+                    className='four columns',
+                    style={'margin-top': '10'}
+                ),
+                html.Div(
+                    [
+                        dcc.Graph(id='pie_graph')
+                    ],
+                    className='four columns',
+                    style={'margin-top': '10'}
+                ),
+                html.Div(
+                    [
+                        dcc.Graph(id='aggregate_graph')
+                    ],
+                    className='four columns',
+                    style={'margin-top': '10'}
+                ),
+            ],
+            className='row'
+        ),
     ],
     className='ten columns offset-by-one'
 )
