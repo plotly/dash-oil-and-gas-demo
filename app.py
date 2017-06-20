@@ -1,6 +1,3 @@
-# In[]:
-# Import required libraries
-
 import os
 import pickle
 import copy
@@ -16,13 +13,10 @@ import dash_html_components as html
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
-
-# In[]:
-# Create app
-
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
-app = dash.Dash(__name__, server=server)
+
+app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/stylesheets/master/stylesheet-oil-and-gas.css'})  # noqa: E501
 
 if 'DYNO' in os.environ:
