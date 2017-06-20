@@ -1,4 +1,4 @@
-plotly==2.0.9
+plotly==2.0.10
 pandas==0.19.2
 pandas-datareader==0.3.0.post0
 dash.ly==0.17.3

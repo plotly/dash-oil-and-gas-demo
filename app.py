@@ -15,8 +15,14 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
+
 app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)
-app.css.append_css({'external_url': 'https://rawgit.com/chriddyp/0247653a7c52feb4c48437e1c1837f75/raw/a68333b876edaf62df2efa7bac0e9b3613258851/dash.css'})  # noqa: E501
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/stylesheets/master/stylesheet-oil-and-gas.css'})  # noqa: E501
+
+if 'DYNO' in os.environ:
+    app.scripts.append_script({
+        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
+    })
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
@@ -77,7 +83,7 @@ layout = dict(
 app.layout = html.Div(
     [
         html.Img(
-            src='https://raw.githubusercontent.com/plotly/oil-and-gas/master/data/dash-logo%20copy.png?token=AK-nZOdj_s00FsenSnDL00XCBQkubgljks5ZTYlzwA%3D%3D',  # noqa: E501
+            src='https://cdn.rawgit.com/plotly/oil-and-gas/master/data/dash-logo%20copy.png?token=AK-nZOdj_s00FsenSnDL00XCBQkubgljks5ZTYlzwA%3D%3D',  # noqa: E501
             style={'width': '4%', 'float': 'left'}
         ),
         html.H2(
