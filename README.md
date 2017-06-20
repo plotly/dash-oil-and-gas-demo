@@ -8,5 +8,5 @@ To learn more check out our [documentation](https://plot.ly/dash).
 
 The following are screenshots for the app in this repo:
 
-![Alt desc](https://github.com/plotly/oil-and-gas/raw/master/Screenshots/Screenshot1.png)
-![Alt desc](https://github.com/plotly/oil-and-gas/raw/master/Screenshots/Screenshot2.png)
+![Alt desc](https://raw.githubusercontent.com/plotly/dash-oil-and-gas-demo/master/Screenshot/Screenshot1.png?token=ARkbw8fsV1yFEcc6TUdVs9YDFPvMB1gGks5ZUl1uwA%3D%3D)
+![Alt desc](https://raw.githubusercontent.com/plotly/dash-oil-and-gas-demo/master/Screenshot/Screenshot2.png?token=ARkbw8fsV1yFEcc6TUdVs9YDFPvMB1gGks5ZUl1uwA%3D%3D)
