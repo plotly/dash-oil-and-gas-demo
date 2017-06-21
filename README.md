@@ -1,4 +1,4 @@
-**Dash Stock Tickers Demo App**
+**Dash Oil and Gas Demo App**
 
 This is a demo of the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
 
