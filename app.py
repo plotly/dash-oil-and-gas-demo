@@ -86,14 +86,14 @@ app.layout = html.Div(
             [
                 html.H2(
                     'New York Oil and Gas - Production Overview',
-                    className='eleven columns',
+                    className='eight columns',
                 ),
                 html.Img(
                     src="https://cdn.rawgit.com/plotly/design-assets/master/logo/dash/images/dash-logo-by-plotly-stripe.png?token=ARkbw71c0vCS8Jnau4bHOoc9HRF_lZAtks5ZUrwDwA%3D%3D",  # noqa: E501
                     className='one columns',
                     style={
                         'height': '100',
-                        'width': '250',
+                        'width': '225',
                         'float': 'right',
                         'position': 'relative',
                     },
