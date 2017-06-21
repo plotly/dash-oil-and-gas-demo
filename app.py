@@ -17,7 +17,7 @@ server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 
 app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)  # noqa: E501
-app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/26f771d6/stylesheet-oil-and-gas.css'})  # noqa: E501
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/master/stylesheet-oil-and-gas.css'})  # noqa: E501
 
 if 'DYNO' in os.environ:
     app.scripts.append_script({
@@ -84,16 +84,19 @@ app.layout = html.Div(
     [
         html.Div(
             [
-                html.Img(
-                    src='https://raw.githubusercontent.com/plotly/dash-oil-and-gas-demo/master/data/dash-logo%20copy.png?token=AK-nZDkxxAlHku7RwXJ-cxJCIe_Tu35lks5ZUml6wA%3D%3D',  # noqa: E501
-                    className='one columns',
-                    style={'height': '40', 'width': '40',
-                           'position': 'relative',
-                           'top': '20'}
-                ),
                 html.H2(
-                    'New York Oil and Gas | Production Overview',
+                    'New York Oil and Gas - Production Overview',
                     className='eleven columns',
+                ),
+                html.Img(
+                    src="https://cdn.rawgit.com/plotly/design-assets/master/logo/dash/images/dash-logo-by-plotly-stripe.png?token=ARkbw71c0vCS8Jnau4bHOoc9HRF_lZAtks5ZUrwDwA%3D%3D",  # noqa: E501
+                    style={
+                        'height': '100px',
+                        'float': 'right',
+                        'position': 'relative',
+                        'bottom': '145px',
+                        'left': '5px'
+                    },
                 ),
             ],
             className='row'
