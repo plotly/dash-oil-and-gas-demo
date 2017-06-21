@@ -17,7 +17,7 @@ server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 
 app = dash.Dash(__name__, server=server, url_base_pathname='/dash/gallery/new-york-oil-and-gas/', csrf_protect=False)  # noqa: E501
-app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/master/stylesheet-oil-and-gas.css'})  # noqa: E501
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2b8ae3b1b71d160ff686973923ac4dde90736b26/stylesheet-oil-and-gas.css'})  # noqa: E501
 
 if 'DYNO' in os.environ:
     app.scripts.append_script({
@@ -91,11 +91,10 @@ app.layout = html.Div(
                 html.Img(
                     src="https://cdn.rawgit.com/plotly/design-assets/master/logo/dash/images/dash-logo-by-plotly-stripe.png?token=ARkbw71c0vCS8Jnau4bHOoc9HRF_lZAtks5ZUrwDwA%3D%3D",  # noqa: E501
                     style={
-                        'height': '100px',
+                        'height': '100',
+                        'width': '40',
                         'float': 'right',
                         'position': 'relative',
-                        'bottom': '145px',
-                        'left': '5px'
                     },
                 ),
             ],
