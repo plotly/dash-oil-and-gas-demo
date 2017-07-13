@@ -1,3 +1,5 @@
+# In[]:
+# Import required libraries
 import os
 import pickle
 import copy
@@ -13,6 +15,9 @@ import dash_html_components as html
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
+
+# In[]:
+# Setup app
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 
@@ -23,6 +28,7 @@ if 'DYNO' in os.environ:
     app.scripts.append_script({
         'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'  # noqa: E501
     })
+
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
@@ -36,6 +42,7 @@ well_type_options = [{'label': str(WELL_TYPES[well_type]),
                       'value': str(well_type)}
                      for well_type in WELL_TYPES]
 
+
 # Load data
 df = pd.read_csv('data/wellspublic.csv')
 df['Date_Well_Completed'] = pd.to_datetime(df['Date_Well_Completed'])
@@ -46,6 +53,7 @@ trim.index = trim['API_WellNo']
 dataset = trim.to_dict(orient='index')
 
 points = pickle.load(open("data/points.pkl", "rb"))
+
 
 # Create global chart template
 mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'  # noqa: E501
@@ -696,6 +704,5 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
 # In[]:
 # Main
-
 if __name__ == '__main__':
     app.server.run(debug=True, threaded=True)
