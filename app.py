@@ -7,6 +7,7 @@ import datetime as dt
 
 import pandas as pd
 from flask import Flask
+from flask_cors import CORS
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -21,6 +22,7 @@ app = dash.Dash(
 )
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
 server = app.server
+CORS(server)
 
 if 'DYNO' in os.environ:
     app.config.routes_pathname_prefix = '/dash/gallery/new-york-oil-and-gas/'
