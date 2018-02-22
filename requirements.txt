@@ -7,3 +7,4 @@ dash-renderer==0.11.3
 dash==0.21.0
 gunicorn==19.7.1
 flask==0.12
+flask_cors
