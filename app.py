@@ -16,17 +16,12 @@ import dash_html_components as html
 # Multi-dropdown options
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
-app = dash.Dash(
-    __name__,
-    url_base_pathname='/dash/gallery/new-york-oil-and-gas/'
-)
+app = dash.Dash(__name__)
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
 server = app.server
 CORS(server)
 
 if 'DYNO' in os.environ:
-    app.config.routes_pathname_prefix = '/dash/gallery/new-york-oil-and-gas/'
-    app.config.requests_pathname_prefix = 'https://dash-oil-and-gas.herokuapp.com/dash/gallery/new-york-oil-and-gas/'
     app.scripts.append_script({
         'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'  # noqa: E501
     })
