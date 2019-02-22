@@ -17,7 +17,7 @@ import dash_html_components as html
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 app = dash.Dash(__name__)
-app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
+# app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
 server = app.server
 CORS(server)
 
@@ -87,15 +87,33 @@ layout = dict(
 # Create app layout
 app.layout = html.Div(
     [
+        dcc.Store(id='aggregate_data'),
         html.Div(
             [
-                html.H1(
-                    'New York Oil and Gas - Production Overview',
-                    className='eight columns',
+                html.Div(
+                    [
+                        html.H2(
+                            'New York Oil and Gas',
+                            style={
+                                "margin-bottom": "0px",
+                                "margin-top": "1rem"
+                            }
+
+                        ),
+                        html.H4(
+                            'Production Overview',
+                            style={
+                                "margin-top": "0px",
+                                "margin-left": "1rem"
+                            },
+                        )
+                    ],
+
+                    className='eight columns'
                 ),
                 html.Img(
                     src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",
-                    className='one columns',
+                    className='two columns',
                     style={
                         'height': '100',
                         'width': '225',
@@ -103,48 +121,43 @@ app.layout = html.Div(
                         'position': 'relative',
                     },
                 ),
+                html.A(
+                    html.Button(
+                        "Learn More",
+                        style={
+                            "align": "center",
+                            "justify": "middle"
+                        }
+                    ),
+                    href="https://plot.ly/dash/pricing/",
+                    style={
+                        "align": "center",
+                        "justify": "middle"
+                    },
+                    className="two columns"
+                )
             ],
             className='row'
-        ),
-        html.Div(
-            [
-                html.H5(
-                    '',
-                    id='well_text',
-                    className='two columns'
-                ),
-                html.H5(
-                    '',
-                    id='production_text',
-                    className='eight columns',
-                    style={'text-align': 'center'}
-                ),
-                html.H5(
-                    '',
-                    id='year_text',
-                    className='two columns',
-                    style={'text-align': 'right'}
-                ),
-            ],
-            className='row'
-        ),
-        html.Div(
-            [
-                html.P('Filter by construction date (or select range in histogram):'),  # noqa: E501
-                dcc.RangeSlider(
-                    id='year_slider',
-                    min=1960,
-                    max=2017,
-                    value=[1990, 2010]
-                ),
-            ],
-            style={'margin-top': '20'}
         ),
         html.Div(
             [
                 html.Div(
                     [
-                        html.P('Filter by well status:'),
+                        html.P(
+                            'Filter by construction date (or select range in histogram):',
+                            className="control_label"
+                        ),
+                        dcc.RangeSlider(
+                            id='year_slider',
+                            min=1960,
+                            max=2017,
+                            value=[1990, 2010],
+                            className="dcc_control"
+                        ),
+                        html.P(
+                            'Filter by well status:',
+                            className="control_label"
+                        ),
                         dcc.RadioItems(
                             id='well_status_selector',
                             options=[
@@ -153,13 +166,15 @@ app.layout = html.Div(
                                 {'label': 'Customize ', 'value': 'custom'}
                             ],
                             value='active',
-                            labelStyle={'display': 'inline-block'}
+                            labelStyle={'display': 'inline-block'},
+                            className="dcc_control"
                         ),
                         dcc.Dropdown(
                             id='well_statuses',
                             options=well_status_options,
                             multi=True,
-                            value=[]
+                            value=list(WELL_STATUSES.keys()),
+                            className="dcc_control"
                         ),
                         dcc.Checklist(
                             id='lock_selector',
@@ -167,13 +182,12 @@ app.layout = html.Div(
                                 {'label': 'Lock camera', 'value': 'locked'}
                             ],
                             values=[],
-                        )
-                    ],
-                    className='six columns'
-                ),
-                html.Div(
-                    [
-                        html.P('Filter by well type:'),
+                            className="dcc_control"
+                        ),
+                        html.P(
+                            'Filter by well type:',
+                            className="control_label"
+                        ),
                         dcc.RadioItems(
                             id='well_type_selector',
                             options=[
@@ -182,20 +196,200 @@ app.layout = html.Div(
                                 {'label': 'Customize ', 'value': 'custom'}
                             ],
                             value='productive',
-                            labelStyle={'display': 'inline-block'}
+                            labelStyle={'display': 'inline-block'},
+                            className="dcc_control"
                         ),
                         dcc.Dropdown(
                             id='well_types',
                             options=well_type_options,
                             multi=True,
-                            value=list(WELL_TYPES.keys()),
+                            value=list(WELL_TYPES.keys())[0:14],
+                            className="dcc_control"
                         ),
                     ],
-                    className='six columns'
+                    className="pretty_container four columns"
                 ),
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.Div(
+                                    [
+                                        html.P("No. of Wells"),
+                                        html.P(
+                                            id="well_text",
+                                            className="info_text"
+                                        )
+                                    ],
+                                    style={
+                                        "flex" : "1"
+                                    },
+                                    className="pretty_container"
+                                ),
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.P("Gas"),
+                                                html.P(
+                                                    id="gasText",
+                                                    className="info_text"
+                                                )
+                                            ],
+                                            style={
+                                                "margin-right": "0",
+                                                "padding-right": "0",
+                                                "flex": "1"
+                                            },
+                                            className="pretty_container"
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.P("Oil"),
+                                                html.P(
+                                                    id="oilText",
+                                                    className="info_text"
+                                                )
+                                            ],
+                                            style={
+                                                "margin-right": "0",
+                                                "padding-right": "0",
+                                                "margin-left": "0",
+                                                "padding-left": "0",
+                                                "flex": "1"
+                                            },
+                                            className="pretty_container"
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.P("Water"),
+                                                html.P(
+                                                    id="waterText",
+                                                    className="info_text"
+                                                )
+                                            ],
+                                            style={
+                                                "margin-left": "0",
+                                                "padding-left": "0",
+                                                "flex": "1"
+                                            },
+                                            className="pretty_container"
+                                        ),
+                                    ],
+                                    style={
+                                        "display" : "flex",
+                                        "flex": "3"
+                                    }
+                                )
+
+                            ],
+                            style={
+                                "display": "flex",
+                            },
+                            className="row"
+                        ),
+                        html.Div(
+                            [
+
+                            ],
+                            className="pretty_container"
+                        )
+                    ],
+                    className="eight columns"
+                )
             ],
-            className='row'
+            className="row"
         ),
+        # html.Div(
+        #     [
+        #         html.H5(
+        #             '',
+        #             # id='well_text',
+        #             className='two columns'
+        #         ),
+        #         html.H5(
+        #             '',
+        #             id='production_text',
+        #             className='eight columns',
+        #             style={'text-align': 'center'}
+        #         ),
+        #         html.H5(
+        #             '',
+        #             id='year_text',
+        #             className='two columns',
+        #             style={'text-align': 'right'}
+        #         ),
+        #     ],
+        #     className='row'
+        # ),
+        # html.Div(
+        #     [
+        #         html.P('Filter by construction date (or select range in histogram):'),  # noqa: E501
+        #         dcc.RangeSlider(
+        #             id='year_slider',
+        #             min=1960,
+        #             max=2017,
+        #             value=[1990, 2010]
+        #         ),
+        #     ],
+        #     style={'margin-top': '20'}
+        # ),
+        # html.Div(
+        #     [
+        #         html.Div(
+        #             [
+        #                 html.P('Filter by well status:'),
+        #                 dcc.RadioItems(
+        #                     id='well_status_selector',
+        #                     options=[
+        #                         {'label': 'All ', 'value': 'all'},
+        #                         {'label': 'Active only ', 'value': 'active'},
+        #                         {'label': 'Customize ', 'value': 'custom'}
+        #                     ],
+        #                     value='active',
+        #                     labelStyle={'display': 'inline-block'}
+        #                 ),
+        #                 dcc.Dropdown(
+        #                     id='well_statuses',
+        #                     options=well_status_options,
+        #                     multi=True,
+        #                     value=[]
+        #                 ),
+        #                 dcc.Checklist(
+        #                     id='lock_selector',
+        #                     options=[
+        #                         {'label': 'Lock camera', 'value': 'locked'}
+        #                     ],
+        #                     values=[],
+        #                 )
+        #             ],
+        #             className='six columns'
+        #         ),
+        #         html.Div(
+        #             [
+        #                 html.P('Filter by well type:'),
+        #                 dcc.RadioItems(
+        #                     id='well_type_selector',
+        #                     options=[
+        #                         {'label': 'All ', 'value': 'all'},
+        #                         {'label': 'Productive only ', 'value': 'productive'},  # noqa: E501
+        #                         {'label': 'Customize ', 'value': 'custom'}
+        #                     ],
+        #                     value='productive',
+        #                     labelStyle={'display': 'inline-block'}
+        #                 ),
+        #                 dcc.Dropdown(
+        #                     id='well_types',
+        #                     options=well_type_options,
+        #                     multi=True,
+        #                     value=list(WELL_TYPES.keys()),
+        #                 ),
+        #             ],
+        #             className='six columns'
+        #         ),
+        #     ],
+        #     className='row'
+        # ),
         html.Div(
             [
                 html.Div(
@@ -248,6 +442,13 @@ app.layout = html.Div(
 
 # In[]:
 # Helper functions
+def human_format(num):
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    # add more suffixes if you need them
+    return '%.2f%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
 
 def filter_dataframe(df, well_statuses, well_types, year_slider):
     dff = df[df['Well_Status'].isin(well_statuses)
@@ -319,6 +520,17 @@ def fetch_aggregate(selected, year_slider):
 # In[]:
 # Create callbacks
 
+@app.callback(Output('aggregate_data', 'data'),
+              [Input('well_statuses', 'value'),
+               Input('well_types', 'value'),
+               Input('year_slider', 'value')])
+def update_production_text(well_statuses, well_types, year_slider):
+
+    dff = filter_dataframe(df, well_statuses, well_types, year_slider)
+    selected = dff['API_WellNo'].values
+    index, gas, oil, water = fetch_aggregate(selected, year_slider)
+    return [human_format(sum(gas)), human_format(sum(oil)), human_format(sum(water))]
+
 # Radio -> multi
 @app.callback(Output('well_statuses', 'value'),
               [Input('well_status_selector', 'value')])
@@ -366,41 +578,29 @@ def update_year_slider(count_graph_selected):
 def update_well_text(well_statuses, well_types, year_slider):
 
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
-    return "No of Wells: {}".format(dff.shape[0])
-
-
-# Selectors -> production text
-@app.callback(Output('production_text', 'children'),
-              [Input('well_statuses', 'value'),
-               Input('well_types', 'value'),
-               Input('year_slider', 'value')])
-def update_production_text(well_statuses, well_types, year_slider):
-
-    dff = filter_dataframe(df, well_statuses, well_types, year_slider)
-    selected = dff['API_WellNo'].values
-    index, gas, oil, water = fetch_aggregate(selected, year_slider)
-
-    def human_format(num):
-        magnitude = 0
-        while abs(num) >= 1000:
-            magnitude += 1
-            num /= 1000.0
-        # add more suffixes if you need them
-        return '%.2f%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
-
-    return "Gas: {} mcf | Oil: {} bbl | Water: {} bbl".format(
-        human_format(sum(gas)),
-        human_format(sum(oil)),
-        human_format(sum(water))
-    )
+    return dff.shape[0]
 
 
 # Slider -> year text
-@app.callback(Output('year_text', 'children'),
-              [Input('year_slider', 'value')])
-def update_year_text(year_slider):
-    return "{} | {}".format(year_slider[0], year_slider[1])
+# @app.callback(Output('year_text', 'children'),
+#               [Input('year_slider', 'value')])
+# def update_year_text(year_slider):
+#     return "{} | {}".format(year_slider[0], year_slider[1])
 
+@app.callback(Output('gasText', 'children'),
+              [Input('aggregate_data', 'data')])
+def update_gas_text(data):
+    return data[0] + " mcf"
+
+@app.callback(Output('oilText', 'children'),
+              [Input('aggregate_data', 'data')])
+def update_oil_text(data):
+    return data[1] + " bbl"
+
+@app.callback(Output('waterText', 'children'),
+              [Input('aggregate_data', 'data')])
+def update_oil_text(data):
+    return data[2] + "bbl"
 
 # Selectors -> main graph
 @app.callback(Output('main_graph', 'figure'),
