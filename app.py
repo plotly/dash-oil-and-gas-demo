@@ -141,6 +141,7 @@ app.layout = html.Div(
         ),
         html.Div(
             [
+                # Div containing all controls
                 html.Div(
                     [
                         html.P(
@@ -209,8 +210,10 @@ app.layout = html.Div(
                     ],
                     className="pretty_container four columns"
                 ),
+                # Wrapping info cards and graphs
                 html.Div(
                     [
+                        # Row of info
                         html.Div(
                             [
                                 html.Div(
@@ -226,6 +229,7 @@ app.layout = html.Div(
                                     },
                                     className="pretty_container"
                                 ),
+
                                 html.Div(
                                     [
                                         html.Div(
@@ -288,9 +292,10 @@ app.layout = html.Div(
                             },
                             className="row"
                         ),
+                        # Graph
                         html.Div(
                             [
-
+                                dcc.Graph(id='count_graph')
                             ],
                             className="pretty_container"
                         )
@@ -413,7 +418,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        dcc.Graph(id='count_graph')
+                        # dcc.Graph(id='count_graph')
                     ],
                     className='four columns',
                     style={'margin-top': '10'}
