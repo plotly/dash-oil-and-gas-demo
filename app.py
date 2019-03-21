@@ -5,6 +5,7 @@ import pickle
 import copy
 import datetime as dt
 
+import requests
 import pandas as pd
 from flask import Flask
 from flask_cors import CORS
@@ -54,26 +55,26 @@ points = pickle.load(open("data/points.pkl", "rb"))
 
 # Create global chart template
 mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'  # noqa: E501
+apiurl = 'https://hackathon-api.bdc.n360.io'
 
 layout = dict(
     autosize=True,
-    height=500,
-    font=dict(color='#CCCCCC'),
-    titlefont=dict(color='#CCCCCC', size='14'),
+    # font=dict(color='#CCCCCC'),
+    # titlefont=dict(color='#CCCCCC', size='14'),
     margin=dict(
-        l=35,
-        r=35,
-        b=35,
-        t=45
+        l=45,
+        r=45,
+        b=45,
+        t=55
     ),
     hovermode="closest",
-    plot_bgcolor="#191A1A",
-    paper_bgcolor="#020202",
+    # plot_bgcolor="#191A1A",
+    # paper_bgcolor="#020202",
     legend=dict(font=dict(size=10), orientation='h'),
     title='Satellite Overview',
     mapbox=dict(
         accesstoken=mapbox_access_token,
-        style="dark",
+        style="light",
         center=dict(
             lon=-78.05,
             lat=42.54
@@ -305,111 +306,19 @@ app.layout = html.Div(
             ],
             className="row"
         ),
-        # html.Div(
-        #     [
-        #         html.H5(
-        #             '',
-        #             # id='well_text',
-        #             className='two columns'
-        #         ),
-        #         html.H5(
-        #             '',
-        #             id='production_text',
-        #             className='eight columns',
-        #             style={'text-align': 'center'}
-        #         ),
-        #         html.H5(
-        #             '',
-        #             id='year_text',
-        #             className='two columns',
-        #             style={'text-align': 'right'}
-        #         ),
-        #     ],
-        #     className='row'
-        # ),
-        # html.Div(
-        #     [
-        #         html.P('Filter by construction date (or select range in histogram):'),  # noqa: E501
-        #         dcc.RangeSlider(
-        #             id='year_slider',
-        #             min=1960,
-        #             max=2017,
-        #             value=[1990, 2010]
-        #         ),
-        #     ],
-        #     style={'margin-top': '20'}
-        # ),
-        # html.Div(
-        #     [
-        #         html.Div(
-        #             [
-        #                 html.P('Filter by well status:'),
-        #                 dcc.RadioItems(
-        #                     id='well_status_selector',
-        #                     options=[
-        #                         {'label': 'All ', 'value': 'all'},
-        #                         {'label': 'Active only ', 'value': 'active'},
-        #                         {'label': 'Customize ', 'value': 'custom'}
-        #                     ],
-        #                     value='active',
-        #                     labelStyle={'display': 'inline-block'}
-        #                 ),
-        #                 dcc.Dropdown(
-        #                     id='well_statuses',
-        #                     options=well_status_options,
-        #                     multi=True,
-        #                     value=[]
-        #                 ),
-        #                 dcc.Checklist(
-        #                     id='lock_selector',
-        #                     options=[
-        #                         {'label': 'Lock camera', 'value': 'locked'}
-        #                     ],
-        #                     values=[],
-        #                 )
-        #             ],
-        #             className='six columns'
-        #         ),
-        #         html.Div(
-        #             [
-        #                 html.P('Filter by well type:'),
-        #                 dcc.RadioItems(
-        #                     id='well_type_selector',
-        #                     options=[
-        #                         {'label': 'All ', 'value': 'all'},
-        #                         {'label': 'Productive only ', 'value': 'productive'},  # noqa: E501
-        #                         {'label': 'Customize ', 'value': 'custom'}
-        #                     ],
-        #                     value='productive',
-        #                     labelStyle={'display': 'inline-block'}
-        #                 ),
-        #                 dcc.Dropdown(
-        #                     id='well_types',
-        #                     options=well_type_options,
-        #                     multi=True,
-        #                     value=list(WELL_TYPES.keys()),
-        #                 ),
-        #             ],
-        #             className='six columns'
-        #         ),
-        #     ],
-        #     className='row'
-        # ),
         html.Div(
             [
                 html.Div(
                     [
                         dcc.Graph(id='main_graph')
                     ],
-                    className='eight columns',
-                    style={'margin-top': '20'}
+                    className='pretty_container eight columns',
                 ),
                 html.Div(
                     [
                         dcc.Graph(id='individual_graph')
                     ],
-                    className='four columns',
-                    style={'margin-top': '20'}
+                    className='pretty_container four columns',
                 ),
             ],
             className='row'
@@ -418,24 +327,15 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        # dcc.Graph(id='count_graph')
-                    ],
-                    className='four columns',
-                    style={'margin-top': '10'}
-                ),
-                html.Div(
-                    [
                         dcc.Graph(id='pie_graph')
                     ],
-                    className='four columns',
-                    style={'margin-top': '10'}
+                    className='pretty_container seven columns',
                 ),
                 html.Div(
                     [
                         dcc.Graph(id='aggregate_graph')
                     ],
-                    className='four columns',
-                    style={'margin-top': '10'}
+                    className='pretty_container five columns',
                 ),
             ],
             className='row'
@@ -445,7 +345,6 @@ app.layout = html.Div(
 )
 
 
-# In[]:
 # Helper functions
 def human_format(num):
     magnitude = 0
@@ -871,9 +770,9 @@ def make_count_figure(well_statuses, well_types, year_slider):
     colors = []
     for i in range(1960, 2018):
         if i >= int(year_slider[0]) and i < int(year_slider[1]):
-            colors.append('rgb(192, 255, 245)')
+            colors.append('rgb(123, 199, 255)')
         else:
-            colors.append('rgba(192, 255, 245, 0.2)')
+            colors.append('rgba(123, 199, 255, 0.2)')
 
     data = [
         dict(

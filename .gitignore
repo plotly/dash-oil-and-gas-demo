@@ -96,3 +96,5 @@ ENV/
 # Added
 unused/
 vv
+.DS_Store
+pyvenv.cfg
