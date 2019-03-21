@@ -45,9 +45,12 @@
   .column,
   .columns {
     margin-left: 0.5%; }
-  .column:first-child,
+  /* .column:first-child,
   .columns:first-child {
     margin-left: 0; }
+  .column:last-child,
+  .columns:last-child {
+    margin-left: 0; } */
 
   .one.column,
   .one.columns                    { width: 8%;             }
@@ -116,11 +119,13 @@ body {
   font-weight: 400;
   font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: rgb(50, 50, 50);
-  background-color: #F2F2F2
+  background-color: #F2F2F2;
+  margin: 5%;
 }
 .pretty_container {
+  border-radius: 5px;
   background-color: #F9F9F9;
-  margin: 15px;
+  margin: 10px;
   padding: 15px;
 }
 

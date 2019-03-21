@@ -68,8 +68,8 @@ layout = dict(
         t=55
     ),
     hovermode="closest",
-    # plot_bgcolor="#191A1A",
-    # paper_bgcolor="#020202",
+    plot_bgcolor="#F9F9F9",
+    paper_bgcolor="#F9F9F9",
     legend=dict(font=dict(size=10), orientation='h'),
     title='Satellite Overview',
     mapbox=dict(
@@ -115,30 +115,25 @@ app.layout = html.Div(
                 html.Img(
                     src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe.png",
                     className='two columns',
-                    style={
-                        'height': '100',
-                        'width': '225',
-                        'float': 'right',
-                        'position': 'relative',
-                    },
                 ),
                 html.A(
                     html.Button(
                         "Learn More",
                         style={
                             "align": "center",
-                            "justify": "middle"
+                            "justify": "middle",
+                            "height": "100%",
                         }
                     ),
                     href="https://plot.ly/dash/pricing/",
-                    style={
-                        "align": "center",
-                        "justify": "middle"
-                    },
                     className="two columns"
                 )
             ],
-            className='row'
+            className='row',
+            style={
+                "display": "flex",
+                "align-items": "center"
+            }
         ),
         html.Div(
             [
@@ -340,8 +335,7 @@ app.layout = html.Div(
             ],
             className='row'
         ),
-    ],
-    className='ten columns offset-by-one'
+    ]
 )
 
 
@@ -530,7 +524,6 @@ def make_main_figure(well_statuses, well_types, year_slider,
             marker=dict(
                 size=4,
                 opacity=0.6,
-                color=WELL_COLORS[well_type]
             )
         )
         traces.append(trace)
