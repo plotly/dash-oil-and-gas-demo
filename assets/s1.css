@@ -56,10 +56,10 @@
   .one.columns                    { width: 8%;             }
   .two.columns                    { width: 16.25%;         }
   .three.columns                  { width: 22%;            }
-  .four.columns                   { width: 33%;            }
-  .five.columns                   { width: 39.3333333333%; }
+  .four.columns                   { width: calc(100% / 3);            }
+  .five.columns                   { width: calc(100% * 5/12); }
   .six.columns                    { width: 49.75%;          }
-  .seven.columns                  { width: 56.6666666667%; }
+  .seven.columns                  { width: calc(100% * 7/12); }
   .eight.columns                  { width: 66.5%;          }
   .nine.columns                   { width: 74.0%;          }
   .ten.columns                    { width: 82.6666666667%; }
@@ -127,10 +127,18 @@ body {
   background-color: #F9F9F9;
   margin: 10px;
   padding: 15px;
+  position: relative;
+}
+
+#individual_graph,
+#aggregate_graph {
+  width: calc(100% - 30px);
+  position: absolute;
 }
 
 .bare_container {
-
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 
 .data_text {
@@ -159,6 +167,8 @@ body {
 .row {
   display: flex
 }
+
+
 
 .info_text {
 

@@ -131,7 +131,6 @@ app.layout = html.Div(
             ],
             className='row',
             style={
-                "display": "flex",
                 "align-items": "center"
             }
         ),
@@ -215,7 +214,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.P("No. of Wells"),
-                                        html.P(
+                                        html.H6(
                                             id="well_text",
                                             className="info_text"
                                         )
@@ -231,7 +230,7 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.P("Gas"),
-                                                html.P(
+                                                html.H6(
                                                     id="gasText",
                                                     className="info_text"
                                                 )
@@ -246,7 +245,7 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.P("Oil"),
-                                                html.P(
+                                                html.H6(
                                                     id="oilText",
                                                     className="info_text"
                                                 )
@@ -263,7 +262,7 @@ app.layout = html.Div(
                                         html.Div(
                                             [
                                                 html.P("Water"),
-                                                html.P(
+                                                html.H6(
                                                     id="waterText",
                                                     className="info_text"
                                                 )
@@ -285,17 +284,33 @@ app.layout = html.Div(
                             ],
                             style={
                                 "display": "flex",
+                                "flex": "1"
                             },
                             className="row"
                         ),
                         # Graph
                         html.Div(
                             [
-                                dcc.Graph(id='count_graph')
+                                dcc.Graph(
+                                    id='count_graph',
+                                    style={
+                                        "position": "absolute",
+                                        "height": "calc(100% - 30px)",
+                                        "width": "calc(100% - 30px)",
+                                    }
+                                )
                             ],
+                            style={
+                                "flex": "5",
+                                "position": "relative"
+                            },
                             className="pretty_container"
                         )
                     ],
+                    style={
+                        "display": "flex",
+                        "flex-direction": "column"
+                    },
                     className="eight columns"
                 )
             ],
