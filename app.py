@@ -283,8 +283,7 @@ app.layout = html.Div(
 
                             ],
                             style={
-                                "display": "flex",
-                                "flex": "1"
+                                "display": "flex"
                             },
                             className="row"
                         ),
