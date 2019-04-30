@@ -147,13 +147,13 @@ body {
 }
 
 .dcc_control {
-  margin: 5px;
+  margin: 0;
   padding: 5px;
   width: calc(100%-40px)
 }
 
 .control_label {
-  margin: 10px;
+  margin: 0;
   padding: 10px;
   padding-bottom: 0px;
   margin-bottom: 0px;

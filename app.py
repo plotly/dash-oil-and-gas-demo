@@ -59,13 +59,11 @@ apiurl = 'https://hackathon-api.bdc.n360.io'
 
 layout = dict(
     autosize=True,
-    # font=dict(color='#CCCCCC'),
-    # titlefont=dict(color='#CCCCCC', size='14'),
     margin=dict(
-        l=45,
-        r=45,
-        b=45,
-        t=55
+        l=30,
+        r=30,
+        b=30,
+        t=40
     ),
     hovermode="closest",
     plot_bgcolor="#F9F9F9",
@@ -631,7 +629,7 @@ def make_individual_figure(main_graph_hover):
                 marker=dict(symbol='diamond-open')
             )
         ]
-        layout_individual['title'] = 'Individual Production: ' + dataset[chosen[0]]['Well_Name']  # noqa: E501
+        layout_individual['title'] = dataset[chosen[0]]['Well_Name']  # noqa: E501
 
     figure = dict(data=data, layout=layout_individual)
     return figure
@@ -697,7 +695,7 @@ def make_aggregate_figure(well_statuses, well_types, year_slider,
             )
         )
     ]
-    layout_aggregate['title'] = 'Aggregate Production: ' + WELL_TYPES[well_type]  # noqa: E501
+    layout_aggregate['title'] = 'Aggregate: ' + WELL_TYPES[well_type]  # noqa: E501
 
     figure = dict(data=data, layout=layout_aggregate)
     return figure
