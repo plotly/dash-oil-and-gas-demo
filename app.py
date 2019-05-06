@@ -4,6 +4,7 @@ import os
 import pickle
 import copy
 import datetime as dt
+import math
 
 import requests
 import pandas as pd
@@ -18,14 +19,8 @@ import dash_html_components as html
 from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 app = dash.Dash(__name__)
-# app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
 server = app.server
 CORS(server)
-
-if 'DYNO' in os.environ:
-    app.scripts.append_script({
-        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'  # noqa: E501
-    })
 
 
 # Create controls
@@ -54,15 +49,14 @@ points = pickle.load(open("data/points.pkl", "rb"))
 
 
 # Create global chart template
-mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'  # noqa: E501
-apiurl = 'https://hackathon-api.bdc.n360.io'
+mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
 
 layout = dict(
     autosize=True,
     margin=dict(
         l=30,
         r=30,
-        b=30,
+        b=20,
         t=40
     ),
     hovermode="closest",
@@ -186,7 +180,7 @@ app.layout = html.Div(
                             id='well_type_selector',
                             options=[
                                 {'label': 'All ', 'value': 'all'},
-                                {'label': 'Productive only ', 'value': 'productive'},  # noqa: E501
+                                {'label': 'Productive only ', 'value': 'productive'},
                                 {'label': 'Customize ', 'value': 'custom'}
                             ],
                             value='productive',
@@ -347,18 +341,20 @@ app.layout = html.Div(
             ],
             className='row'
         ),
-    ]
+    ],
+    style={
+        "display": "flex",
+        "flex-direction": "column"
+    }
 )
 
 
 # Helper functions
 def human_format(num):
-    magnitude = 0
-    while abs(num) >= 1000:
-        magnitude += 1
-        num /= 1000.0
-    # add more suffixes if you need them
-    return '%.2f%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
+    
+    magnitude  = int(math.log(num, 1000))
+    mantissa = str(int(num/(1000**magnitude)))
+    return mantissa + ['', 'K', 'M', 'G', 'T', 'P'][magnitude]
 
 def filter_dataframe(df, well_statuses, well_types, year_slider):
     dff = df[df['Well_Status'].isin(well_statuses)
@@ -629,7 +625,7 @@ def make_individual_figure(main_graph_hover):
                 marker=dict(symbol='diamond-open')
             )
         ]
-        layout_individual['title'] = dataset[chosen[0]]['Well_Name']  # noqa: E501
+        layout_individual['title'] = dataset[chosen[0]]['Well_Name']
 
     figure = dict(data=data, layout=layout_individual)
     return figure
@@ -695,7 +691,7 @@ def make_aggregate_figure(well_statuses, well_types, year_slider,
             )
         )
     ]
-    layout_aggregate['title'] = 'Aggregate: ' + WELL_TYPES[well_type]  # noqa: E501
+    layout_aggregate['title'] = 'Aggregate: ' + WELL_TYPES[well_type]
 
     figure = dict(data=data, layout=layout_aggregate)
     return figure
@@ -723,7 +719,7 @@ def make_pie_figure(well_statuses, well_types, year_slider):
             labels=['Gas', 'Oil', 'Water'],
             values=[sum(gas), sum(oil), sum(water)],
             name='Production Breakdown',
-            text=['Total Gas Produced (mcf)', 'Total Oil Produced (bbl)', 'Total Water Produced (bbl)'],  # noqa: E501
+            text=['Total Gas Produced (mcf)', 'Total Oil Produced (bbl)', 'Total Water Produced (bbl)'],
             hoverinfo="text+value+percent",
             textinfo="label+percent+name",
             hole=0.5,
@@ -746,7 +742,7 @@ def make_pie_figure(well_statuses, well_types, year_slider):
             domain={"x": [0.55, 1], 'y':[0.2, 0.8]},
         )
     ]
-    layout_pie['title'] = 'Production Summary: {} to {}'.format(year_slider[0], year_slider[1])  # noqa: E501
+    layout_pie['title'] = 'Production Summary: {} to {}'.format(year_slider[0], year_slider[1])
     layout_pie['font'] = dict(color='#777777')
     layout_pie['legend'] = dict(
         font=dict(color='#CCCCCC', size='10'),
