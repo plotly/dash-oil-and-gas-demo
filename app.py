@@ -87,18 +87,10 @@ app.layout = html.Div(
                     [
                         html.H2(
                             'New York Oil and Gas',
-                            style={
-                                "margin-bottom": "0px",
-                                "margin-top": "1rem"
-                            }
 
                         ),
                         html.H4(
                             'Production Overview',
-                            style={
-                                "margin-top": "0px",
-                                "margin-left": "1rem"
-                            },
                         )
                     ],
 
@@ -111,20 +103,15 @@ app.layout = html.Div(
                 html.A(
                     html.Button(
                         "Learn More",
-                        style={
-                            "align": "center",
-                            "justify": "middle",
-                            "height": "100%",
-                        }
+                        id = "learnMore"
+
                     ),
                     href="https://plot.ly/dash/pricing/",
                     className="two columns"
                 )
             ],
+            id="header",
             className='row',
-            style={
-                "align-items": "center"
-            }
         ),
         html.Div(
             [
@@ -191,7 +178,7 @@ app.layout = html.Div(
                             id='well_types',
                             options=well_type_options,
                             multi=True,
-                            value=list(WELL_TYPES.keys())[0:14],
+                            value=list(WELL_TYPES.keys()),
                             className="dcc_control"
                         ),
                     ],
@@ -211,9 +198,7 @@ app.layout = html.Div(
                                             className="info_text"
                                         )
                                     ],
-                                    style={
-                                        "flex" : "1"
-                                    },
+                                    id="wells",
                                     className="pretty_container"
                                 ),
 
@@ -227,11 +212,7 @@ app.layout = html.Div(
                                                     className="info_text"
                                                 )
                                             ],
-                                            style={
-                                                "margin-right": "0",
-                                                "padding-right": "0",
-                                                "flex": "1"
-                                            },
+                                            id="gas",
                                             className="pretty_container"
                                         ),
                                         html.Div(
@@ -242,13 +223,7 @@ app.layout = html.Div(
                                                     className="info_text"
                                                 )
                                             ],
-                                            style={
-                                                "margin-right": "0",
-                                                "padding-right": "0",
-                                                "margin-left": "0",
-                                                "padding-left": "0",
-                                                "flex": "1"
-                                            },
+                                            id="oil",
                                             className="pretty_container"
                                         ),
                                         html.Div(
@@ -259,24 +234,15 @@ app.layout = html.Div(
                                                     className="info_text"
                                                 )
                                             ],
-                                            style={
-                                                "margin-left": "0",
-                                                "padding-left": "0",
-                                                "flex": "1"
-                                            },
+                                            id="water",
                                             className="pretty_container"
                                         ),
                                     ],
-                                    style={
-                                        "display" : "flex",
-                                        "flex": "3"
-                                    }
+                                    id="tripleContainer",
                                 )
 
                             ],
-                            style={
-                                "display": "flex"
-                            },
+                            id = "infoContainer",
                             className="row"
                         ),
                         # Graph
@@ -351,7 +317,7 @@ app.layout = html.Div(
 
 # Helper functions
 def human_format(num):
-    
+
     magnitude  = int(math.log(num, 1000))
     mantissa = str(int(num/(1000**magnitude)))
     return mantissa + ['', 'K', 'M', 'G', 'T', 'P'][magnitude]
