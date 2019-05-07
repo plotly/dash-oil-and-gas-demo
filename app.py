@@ -1,4 +1,3 @@
-# In[]:
 # Import required libraries
 import os
 import pickle
@@ -75,8 +74,6 @@ layout = dict(
     )
 )
 
-
-# In[]:
 # Create app layout
 app.layout = html.Div(
     [
@@ -115,7 +112,6 @@ app.layout = html.Div(
         ),
         html.Div(
             [
-                # Div containing all controls
                 html.Div(
                     [
                         html.P(
@@ -184,10 +180,8 @@ app.layout = html.Div(
                     ],
                     className="pretty_container four columns"
                 ),
-                # Wrapping info cards and graphs
                 html.Div(
                     [
-                        # Row of info
                         html.Div(
                             [
                                 html.Div(
@@ -245,7 +239,6 @@ app.layout = html.Div(
                             id = "infoContainer",
                             className="row"
                         ),
-                        # Graph
                         html.Div(
                             [
                                 dcc.Graph(
@@ -264,10 +257,7 @@ app.layout = html.Div(
                             className="pretty_container"
                         )
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column"
-                    },
+                    id="mainCol",
                     className="eight columns"
                 )
             ],
@@ -308,6 +298,7 @@ app.layout = html.Div(
             className='row'
         ),
     ],
+    id="mainContainer",
     style={
         "display": "flex",
         "flex-direction": "column"
@@ -389,9 +380,7 @@ def fetch_aggregate(selected, year_slider):
     return index, gas, oil, water
 
 
-# In[]:
 # Create callbacks
-
 @app.callback(Output('aggregate_data', 'data'),
               [Input('well_statuses', 'value'),
                Input('well_types', 'value'),
@@ -451,13 +440,6 @@ def update_well_text(well_statuses, well_types, year_slider):
 
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
     return dff.shape[0]
-
-
-# Slider -> year text
-# @app.callback(Output('year_text', 'children'),
-#               [Input('year_slider', 'value')])
-# def update_year_text(year_slider):
-#     return "{} | {}".format(year_slider[0], year_slider[1])
 
 @app.callback(Output('gasText', 'children'),
               [Input('aggregate_data', 'data')])
@@ -769,8 +751,6 @@ def make_count_figure(well_statuses, well_types, year_slider):
     figure = dict(data=data, layout=layout_count)
     return figure
 
-
-# In[]:
 # Main
 if __name__ == '__main__':
     app.server.run(debug=True, threaded=True)

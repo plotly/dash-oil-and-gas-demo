@@ -175,6 +175,7 @@ body {
   width": calc(100% - 30px)
 } */
 
+
 /* #countGraphContainer {
   flex: 5;
   position: relative
@@ -188,6 +189,11 @@ body {
   align: center;
   justify: middle;
   height: 100%
+}
+
+#mainCol {
+  display: flex;
+  flex-direction: column
 }
 
 #wells {
@@ -225,6 +231,11 @@ body {
 
 #infoContainer {
   display": flex
+}
+
+#mainContainer {
+  display: flex;
+  flex-direction: column
 }
 .info_text {
 
