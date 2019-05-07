@@ -52,6 +52,7 @@ mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NW
 
 layout = dict(
     autosize=True,
+    automargin=True,
     margin=dict(
         l=30,
         r=30,
@@ -244,22 +245,13 @@ app.layout = html.Div(
                             [
                                 dcc.Graph(
                                     id='count_graph',
-                                    style={
-                                        "position": "absolute",
-                                        "height": "calc(100% - 30px)",
-                                        "width": "calc(100% - 30px)",
-                                    }
                                 )
                             ],
                             id="countGraphContainer",
-                            style={
-                                "flex": "5",
-                                "position": "relative"
-                            },
                             className="pretty_container"
                         )
                     ],
-
+                    id="rightCol",
                     className="eight columns"
                 )
             ],
