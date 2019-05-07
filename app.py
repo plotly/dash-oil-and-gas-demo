@@ -251,6 +251,7 @@ app.layout = html.Div(
                                     }
                                 )
                             ],
+                            id="countGraphContainer",
                             style={
                                 "flex": "5",
                                 "position": "relative"
@@ -258,7 +259,7 @@ app.layout = html.Div(
                             className="pretty_container"
                         )
                     ],
-                    id="mainCol",
+
                     className="eight columns"
                 )
             ],
@@ -758,6 +759,7 @@ def make_count_figure(well_statuses, well_types, year_slider):
     layout_count['title'] = 'Completed Wells/Year'
     layout_count['dragmode'] = 'select'
     layout_count['showlegend'] = False
+    layout_count['autosize'] = True
 
     figure = dict(data=data, layout=layout_count)
     return figure
