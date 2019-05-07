@@ -100,7 +100,7 @@ app.layout = html.Div(
                 html.A(
                     html.Button(
                         "Learn More",
-                        id = "learnMore"
+                        id="learnMore"
 
                     ),
                     href="https://plot.ly/dash/pricing/",
@@ -163,7 +163,8 @@ app.layout = html.Div(
                             id='well_type_selector',
                             options=[
                                 {'label': 'All ', 'value': 'all'},
-                                {'label': 'Productive only ', 'value': 'productive'},
+                                {'label': 'Productive only ',
+                                    'value': 'productive'},
                                 {'label': 'Customize ', 'value': 'custom'}
                             ],
                             value='productive',
@@ -236,7 +237,7 @@ app.layout = html.Div(
                                 )
 
                             ],
-                            id = "infoContainer",
+                            id="infoContainer",
                             className="row"
                         ),
                         html.Div(
@@ -309,9 +310,10 @@ app.layout = html.Div(
 # Helper functions
 def human_format(num):
 
-    magnitude  = int(math.log(num, 1000))
-    mantissa = str(int(num/(1000**magnitude)))
+    magnitude = int(math.log(num, 1000))
+    mantissa = str(int(num / (1000**magnitude)))
     return mantissa + ['', 'K', 'M', 'G', 'T', 'P'][magnitude]
+
 
 def filter_dataframe(df, well_statuses, well_types, year_slider):
     dff = df[df['Well_Status'].isin(well_statuses)
@@ -393,6 +395,8 @@ def update_production_text(well_statuses, well_types, year_slider):
     return [human_format(sum(gas)), human_format(sum(oil)), human_format(sum(water))]
 
 # Radio -> multi
+
+
 @app.callback(Output('well_statuses', 'value'),
               [Input('well_status_selector', 'value')])
 def display_status(selector):
@@ -441,15 +445,18 @@ def update_well_text(well_statuses, well_types, year_slider):
     dff = filter_dataframe(df, well_statuses, well_types, year_slider)
     return dff.shape[0]
 
+
 @app.callback(Output('gasText', 'children'),
               [Input('aggregate_data', 'data')])
 def update_gas_text(data):
     return data[0] + " mcf"
 
+
 @app.callback(Output('oilText', 'children'),
               [Input('aggregate_data', 'data')])
 def update_oil_text(data):
     return data[1] + " bbl"
+
 
 @app.callback(Output('waterText', 'children'),
               [Input('aggregate_data', 'data')])
@@ -457,6 +464,8 @@ def update_oil_text(data):
     return data[2] + "bbl"
 
 # Selectors -> main graph
+
+
 @app.callback(Output('main_graph', 'figure'),
               [Input('well_statuses', 'value'),
                Input('well_types', 'value'),
@@ -667,7 +676,8 @@ def make_pie_figure(well_statuses, well_types, year_slider):
             labels=['Gas', 'Oil', 'Water'],
             values=[sum(gas), sum(oil), sum(water)],
             name='Production Breakdown',
-            text=['Total Gas Produced (mcf)', 'Total Oil Produced (bbl)', 'Total Water Produced (bbl)'],
+            text=['Total Gas Produced (mcf)', 'Total Oil Produced (bbl)',
+                  'Total Water Produced (bbl)'],
             hoverinfo="text+value+percent",
             textinfo="label+percent+name",
             hole=0.5,
@@ -690,7 +700,8 @@ def make_pie_figure(well_statuses, well_types, year_slider):
             domain={"x": [0.55, 1], 'y':[0.2, 0.8]},
         )
     ]
-    layout_pie['title'] = 'Production Summary: {} to {}'.format(year_slider[0], year_slider[1])
+    layout_pie['title'] = 'Production Summary: {} to {}'.format(
+        year_slider[0], year_slider[1])
     layout_pie['font'] = dict(color='#777777')
     layout_pie['legend'] = dict(
         font=dict(color='#CCCCCC', size='10'),
@@ -750,6 +761,7 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
     figure = dict(data=data, layout=layout_count)
     return figure
+
 
 # Main
 if __name__ == '__main__':
