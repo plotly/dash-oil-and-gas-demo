@@ -8,7 +8,6 @@ import math
 import requests
 import pandas as pd
 from flask import Flask
-from flask_cors import CORS
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -19,8 +18,6 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS
 
 app = dash.Dash(__name__)
 server = app.server
-CORS(server)
-
 
 # Create controls
 county_options = [{'label': str(COUNTIES[county]), 'value': str(county)}
