@@ -448,13 +448,13 @@ def update_gas_text(data):
 @app.callback(Output('oilText', 'children'),
               [Input('aggregate_data', 'data')])
 def update_oil_text(data):
-    return data[1] + "bbl"
+    return data[1] + " bbl"
 
 
 @app.callback(Output('waterText', 'children'),
               [Input('aggregate_data', 'data')])
 def update_oil_text(data):
-    return data[2] + "bbl"
+    return data[2] + " bbl"
 
 # Selectors -> main graph
 
