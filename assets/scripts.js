@@ -12,3 +12,11 @@
 
 ga('create', 'UA-39373211-1', 'auto');
 ga('send', 'pageview');
+
+window.onload = (e) => {
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+    console.log("fired resize");
+  }, 500);
+
+}
