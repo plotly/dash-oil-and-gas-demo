@@ -13,10 +13,26 @@
 ga('create', 'UA-39373211-1', 'auto');
 ga('send', 'pageview');
 
-window.onload = (e) => {
-  setTimeout(() => {
-    window.dispatchEvent(new Event('resize'));
-    console.log("fired resize");
-  }, 500);
+var graphToResize = document.getElementById('count_graph');
 
+var resized = false;
+
+window.onload = function(){
+  var graphToResize = document.getElementById('count_graph');
+  graphToResize.on('plotly_afterplot', triggerResize, {once: true})
 }
+
+
+var triggerResize = function() {
+    if (!resized) {
+      setTimeout(function() {
+        window.dispatchEvent(new Event('resize'));
+        console.log("fired resize");
+      }, 1000);
+      resized = true;
+  }
+}
+//
+// window.onload = function(){
+//   triggerResize();
+// }
