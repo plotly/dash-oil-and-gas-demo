@@ -6,4 +6,3 @@ dash-html-components==0.16.0
 dash-core-components==0.47.0
 gunicorn==19.7.1
 flask==0.12
-flask_cors==3.07
