@@ -18,8 +18,10 @@ var graphToResize = document.getElementById('count_graph');
 var resized = false;
 
 window.onload = function(){
-  var graphToResize = document.getElementById('count_graph');
-  graphToResize.on('plotly_afterplot', triggerResize, {once: true})
+  setTimeout(function() {
+    var graphToResize = document.getElementById('count_graph');
+    graphToResize.on('plotly_afterplot', triggerResize, {once: true})
+  }, 1000);
 }
 
 
