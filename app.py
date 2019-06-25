@@ -756,4 +756,4 @@ def make_count_figure(well_statuses, well_types, year_slider):
 
 # Main
 if __name__ == '__main__':
-    app.server.run(debug=True, threaded=True)
+    app.server.run(host='0.0.0.0', threaded=True, port=8050)
