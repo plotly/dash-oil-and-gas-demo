@@ -137,8 +137,6 @@ def set_type_options(chosen_type):
         Input('display-type', 'options'),
 )
 def set_type_value(available_options):
-        #displays type values that go into second dropdown?
-        # new_df = df1[(df1['region'].isin(town)]
         return [x['value'] for x in available_options]
 @app.callback(
         Output('display-scatter', 'figure'),
